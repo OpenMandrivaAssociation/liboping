@@ -4,7 +4,7 @@
 
 Summary:	Library to generate ICMP echo requests
 Name:		liboping
-Version:	0.3.5
+Version:	1.6.2
 Release:	%mkrel 3
 License:	GPLv2+
 Group:		System/Libraries
@@ -13,7 +13,8 @@ Source0:	http://verplant.org/liboping/files/%{name}-%{version}.tar.gz
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	libtool
-BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
+BuildRequires:	perl-devel
+BuildRequires:	ncurses-devel
 
 %description
 liboping is a C library to generate ICMP echo requests, better known as "ping
@@ -57,48 +58,48 @@ Group:		Networking/Other
 The oping utility demonstrates the liboping library's abilities. It is like
 ping, ping6, and fping rolled into one. 
 
+%package perl
+Group:          Networking/IRC
+Summary:        %{name} perl plugin
+Requires:       %libname = %{version}-%{release}
+
+%description perl
+This package allow %{name} to use perl scripts
+
 %prep
 
 %setup -q -n %{name}-%{version}
+sed -i 's/-Werror//g' src/Makefile.*
+sed -i 's|/usr/local||g' bindings/perl/Makefile.PL
 
 %build
-rm -f configure
-libtoolize --copy --force; aclocal; autoconf; automake --foreign --add-missing --copy
-
-%configure2_5x
-
+%configure2_5x --disable-static
+%make -C src
+%make -C bindings perl/Makefile
+cd bindings/perl
+%{__perl} Makefile.PL INSTALLDIRS=vendor TOP_BUILDDIR=..
 %make
 
-%install
-rm -rf %{buildroot}
 
+%install
 %makeinstall_std
 
-%if %mdkversion < 200900
-%post -n %{libname} -p /sbin/ldconfig
-%endif
-
-%if %mdkversion < 200900
-%postun -n %{libname} -p /sbin/ldconfig
-%endif
-
-%clean
-rm -rf %{buildroot}
+find %{buildroot} -type f -name .packlist -exec rm -f {} \;
+find %{buildroot} -depth -type d -exec rmdir {} 2>/dev/null \;
 
 %files -n oping
-%defattr(-,root,root)
-%attr(0755,root,root) %{_bindir}/oping
-%attr(0644,root,root) %{_mandir}/man8/*
+%{_bindir}/oping
+%{_bindir}/noping
+%{_mandir}/man8/*
 
 %files -n %{libname}
-%defattr(-,root,root)
 %doc AUTHORS COPYING ChangeLog README
-%attr(0755,root,root) %{_libdir}/lib*.so.%{major}*
+%{_libdir}/lib*.so.%{major}*
 
 %files -n %{develname}
-%defattr(-,root,root)
 %attr(0755,root,root) %{_libdir}/*so
-%attr(0644,root,root) %{_libdir}/*.a
-%attr(0644,root,root) %{_libdir}/*.la
 %attr(0644,root,root) %{_includedir}/*.h
 %attr(0644,root,root) %{_mandir}/man3/*
+
+%files perl
+%{perl_vendorarch}/*

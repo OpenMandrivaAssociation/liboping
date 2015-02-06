@@ -5,7 +5,7 @@
 Summary:	Library to generate ICMP echo requests
 Name:		liboping
 Version:	1.6.2
-Release:	4
+Release:	5
 License:	GPLv2+
 Group:		System/Libraries
 URL:		http://verplant.org/liboping/

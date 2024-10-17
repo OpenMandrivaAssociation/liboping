@@ -8,7 +8,7 @@ Version:	1.6.2
 Release:	5
 License:	GPLv2+
 Group:		System/Libraries
-URL:		http://verplant.org/liboping/
+URL:		https://verplant.org/liboping/
 Source0:	http://verplant.org/liboping/files/%{name}-%{version}.tar.gz
 BuildRequires:	libtool
 BuildRequires:	perl-devel

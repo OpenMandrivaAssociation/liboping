@@ -1,0 +1,21 @@
+diff -up liboping-1.10.0/src/oping.c.omv~ liboping-1.10.0/src/oping.c
+--- liboping-1.10.0/src/oping.c.omv~	2024-10-25 23:58:33.990468794 +0200
++++ liboping-1.10.0/src/oping.c	2024-10-25 23:59:05.910813439 +0200
+@@ -1125,7 +1125,7 @@ static int update_graph_prettyping (ping
+ 			wattron (ctx->window, COLOR_PAIR(color));
+ 
+ 		if (has_utf8())
+-			mvwprintw (ctx->window, /* y = */ 3, /* x = */ x + 2, symbol);
++			mvwprintw (ctx->window, /* y = */ 3, /* x = */ x + 2, "%s", symbol);
+ 		else
+ 			mvwaddch (ctx->window, /* y = */ 3, /* x = */ x + 2, symbolc);
+ 
+@@ -1223,7 +1223,7 @@ static int update_graph_histogram (ping_
+ 			mvwaddch (ctx->window, /* y = */ 3, /* x = */ x + 2, ' ');
+ 		else if (has_utf8 ())
+ 			mvwprintw (ctx->window, /* y = */ 3, /* x = */ x + 2,
+-					hist_symbols_utf8[index]);
++					"%s", hist_symbols_utf8[index]);
+ 		else
+ 			mvwaddch (ctx->window, /* y = */ 3, /* x = */ x + 2,
+ 					hist_symbols_acs[index] | A_ALTCHARSET);

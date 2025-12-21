@@ -10,6 +10,11 @@ License:	GPLv2+
 Group:		System/Libraries
 URL:		https://noping.cc/
 Source0:	https://noping.cc/files/liboping-%{version}.tar.bz2
+BuildRequires:	autoconf
+BuildRequires:	automake
+BuildRequires:	libtool-base
+BuildRequires:	slibtool
+BuildRequires:	make
 BuildRequires:	libtool
 BuildRequires:	perl-devel
 BuildRequires:	pkgconfig(ncurses)

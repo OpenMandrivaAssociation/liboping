@@ -5,7 +5,7 @@
 Summary:	Library to generate ICMP echo requests
 Name:		liboping
 Version:	1.10.0
-Release:	2
+Release:	3
 License:	GPLv2+
 Group:		System/Libraries
 URL:		https://noping.cc/
@@ -15,7 +15,6 @@ BuildRequires:	automake
 BuildRequires:	libtool-base
 BuildRequires:	slibtool
 BuildRequires:	make
-BuildRequires:	libtool
 BuildRequires:	perl-devel
 BuildRequires:	pkgconfig(ncurses)
 

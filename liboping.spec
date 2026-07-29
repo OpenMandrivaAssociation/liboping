@@ -5,7 +5,7 @@
 Summary:	Library to generate ICMP echo requests
 Name:		liboping
 Version:	1.10.0
-Release:	4
+Release:	5
 License:	GPLv2+
 Group:		System/Libraries
 URL:		https://noping.cc/
@@ -76,20 +76,12 @@ sed -i 's/-Werror//g' src/Makefile.*
 sed -i 's|/usr/local||g' bindings/perl/Makefile.PL
 
 %build
-# Prefer slibtool. Avoid %%configure's auto-slibtoolize+autoconf+sed path:
-# the floating-point sed can mangle freshly regenerated configure scripts
-# (ac_fn_c_try_link missing -> "cannot find socket").
+# Prefer slibtool. Hide Makefile.am so %%configure does not re-run
+# slibtoolize/automake/autoconf (which breaks this old configure script).
 export LIBTOOL=slibtool
-./configure \
-	--prefix=%{_prefix} \
-	--exec-prefix=%{_prefix} \
-	--bindir=%{_bindir} \
-	--sbindir=%{_bindir} \
-	--libdir=%{_libdir} \
-	--includedir=%{_includedir} \
-	--mandir=%{_mandir} \
-	--disable-static \
-	--disable-silent-rules
+mv Makefile.am Makefile.am._skip_regen
+%configure --disable-static
+mv Makefile.am._skip_regen Makefile.am
 
 %make_build -C src
 %make_build -C bindings perl/Makefile
